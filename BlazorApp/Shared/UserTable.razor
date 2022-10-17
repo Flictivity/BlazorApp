@@ -1,0 +1,49 @@
+﻿@using BlazorApp.Model
+
+@if (_users == null || _users.Count == 0)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (_users.Count == 1)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@_users.FirstOrDefault()?.FName</h5>
+            <h5 class="card-title">@_users.FirstOrDefault()?.LName</h5>
+            <p class="card-text">Age: @_users.FirstOrDefault()?.Age</p>
+            <p class="card-text">City: @_users.FirstOrDefault()?.City</p>
+            <a href="#" class="btn btn-primary">Show more info</a>
+        </div>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>City</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in _users)
+        {
+            <tr>
+                <td>@user.FName</td>
+                <td>@user.LName</td>
+                <td>@user.Age</td>
+                <td>@user.City</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public List<User>? _users { get; set; }
+}

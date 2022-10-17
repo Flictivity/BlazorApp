@@ -1,0 +1,12 @@
+﻿@page "/UserInfoTables"
+@using BlazorApp.Services
+
+@inject UserService UserService;
+
+<h3>User Info Tables</h3>
+
+<UserTable _users="@UserService.GetUsersList()"></UserTable>
+
+@code {
+    
+}
