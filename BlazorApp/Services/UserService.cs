@@ -4,8 +4,6 @@ namespace BlazorApp.Services;
 
 public class UserService
 {
-    private static Random _random = new Random();
-    
     private static readonly string[] Cityes = new[]
     {
         "Moscow", "Kazan", "Rio", "Tokyo", "New York", "Saint Petersburg", "Washington"
@@ -23,7 +21,8 @@ public class UserService
 
     public static List<User> GetUsersList()
     {
-        return Enumerable.Range(1, _random.Next(0,6)).Select(index => new User()
+        var random = new Random();
+        return Enumerable.Range(1, random.Next(0,6)).Select(index => new User()
         {
             FName = FNames[Random.Shared.Next(FNames.Length)],
             LName = LNames[Random.Shared.Next(LNames.Length)],
