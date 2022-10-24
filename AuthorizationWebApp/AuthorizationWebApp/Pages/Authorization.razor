@@ -1,0 +1,44 @@
+﻿@page "/Authorization"
+@using AuthorizationWebApp.Data.LocalStorageService
+@inject UserService UserService;
+@inject IJSRuntime Js;
+@inject ILocalStorageService LocalStorageService
+
+<h3>Authorization</h3>
+<form>
+    <div class="form-outline mb-4">
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="_userLogin"/>
+        <label class="form-label" for="form3Example1cg">Your Login</label>
+    </div>
+    <div class="form-outline mb-4">
+        <input type="text" id="form3Example2cg" class="form-control form-control-lg" @bind-value="_userPassword"/>
+        <label class="form-label" for="form3Example1cg">Your Password</label>
+    </div>
+
+    <button class="btn btn-dark" @onclick="UserLogin">Login</button>
+</form>
+
+@code {
+    private string? _userLogin;
+    private string? _userPassword;
+
+    private async void UserLogin()
+    {
+        if (_userLogin is not null &&
+            _userPassword is not null)
+        {
+            UserService.currentUser = UserService.UserLogin(_userLogin);
+            if (UserService.currentUser is null)
+            {
+                Js.InvokeVoidAsync("alert", "No such user in DB!");
+                return;
+            }
+            
+            Js.InvokeVoidAsync("alert", "Authorization has succesfull!");
+            await LocalStorageService.SetAsync<User>("Authorization", UserService.currentUser);
+            
+            _userLogin = null;
+            _userPassword = null;
+        }
+    }
+}
