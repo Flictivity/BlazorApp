@@ -11,10 +11,10 @@
     <main>
         <div class="top-row px-4">
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-            @if (UserService.currentUser is not null &&
-                 UserService.currentUser.Login is not null)
+            @if (UserService.CurrentUser is not null &&
+                 UserService.CurrentUser.Login is not null)
             {
-                <a href="Cabinet">@UserService.currentUser.Name</a>
+                <a href="Cabinet">@UserService.CurrentUser.Name</a>
             }
         </div>
 

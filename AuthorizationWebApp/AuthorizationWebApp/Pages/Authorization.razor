@@ -1,5 +1,6 @@
 ﻿@page "/Authorization"
 @using AuthorizationWebApp.Data.LocalStorageService
+@using MongoDB.Driver
 @inject UserService UserService;
 @inject IJSRuntime Js;
 @inject ILocalStorageService LocalStorageService
@@ -27,18 +28,19 @@
         if (_userLogin is not null &&
             _userPassword is not null)
         {
-            UserService.currentUser = UserService.UserLogin(_userLogin);
-            if (UserService.currentUser is null)
+            UserService.CurrentUser = UserService.UserLogin(_userLogin);
+            if (UserService.CurrentUser is null)
             {
-                Js.InvokeVoidAsync("alert", "No such user in DB!");
+                await Js.InvokeVoidAsync("alert", "No such user in DB!");
                 return;
             }
             
-            Js.InvokeVoidAsync("alert", "Authorization has succesfull!");
-            await LocalStorageService.SetAsync<User>("Authorization", UserService.currentUser);
+            await Js.InvokeVoidAsync("alert", "Authorization has succesfull!");
+            await LocalStorageService.SetAsync<User>("Authorization", UserService.CurrentUser);
             
             _userLogin = null;
             _userPassword = null;
+            StateHasChanged();
         }
     }
 }

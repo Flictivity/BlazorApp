@@ -4,35 +4,36 @@ namespace AuthorizationWebApp.Data;
 
 public class UserService
 {
-    public User currentUser = new User();
+    public User CurrentUser = new User();
     
-    private static readonly MongoClient client = new MongoClient("mongodb://localhost");
-    private static readonly IMongoDatabase db = client.GetDatabase("UsersDb");
-    private readonly IMongoCollection<User> usersCollection = db.GetCollection<User>("Users");
+    private static readonly MongoClient Client = new MongoClient("mongodb://localhost");
+    private static readonly IMongoDatabase Db = Client.GetDatabase("UsersDb");
+    private readonly IMongoCollection<User> _usersCollection = Db.GetCollection<User>("Users");
     
     public bool SaveUser(User user)
     {
         try
         {
-            usersCollection.InsertOne(user);
+            _usersCollection.InsertOne(user);
             return true;
         }
-        catch (Exception e)
+        catch 
         {
             return false;
         }
     }
 
-    public User UserLogin(string Login)
+    public User UserLogin(string login)
     {
         try
         {
-            currentUser = usersCollection.Find(x => x.Login == Login).FirstOrDefault();
+            CurrentUser = _usersCollection.Find(x => x.Login == login).FirstOrDefault();
         }
-        catch (Exception e)
+        catch
         {
+            // ignored
         }
 
-        return currentUser;
+        return CurrentUser;
     }
 }

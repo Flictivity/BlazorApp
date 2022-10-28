@@ -31,10 +31,10 @@ public class LocalStorageService : ILocalStorageService
 
         if (string.IsNullOrEmpty(data))
         {
-            return null;
+            return null!;
         }
 
-        return JsonSerializer.Deserialize<T>(data);
+        return JsonSerializer.Deserialize<T>(data)!;
     }
 
     public async Task<string> GetStringAsync(string key)

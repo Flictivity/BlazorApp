@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using AuthorizationWebApp.Data;
+using AuthorizationWebApp.Data.FileSystemService;
 using AuthorizationWebApp.Data.LocalStorageService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<User>();
 builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+builder.Services.AddSingleton<IFileSystemService, FileSystemService>();
 
 var app = builder.Build();
 
