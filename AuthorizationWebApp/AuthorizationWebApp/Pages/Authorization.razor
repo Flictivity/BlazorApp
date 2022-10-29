@@ -4,6 +4,7 @@
 @inject UserService UserService;
 @inject IJSRuntime Js;
 @inject ILocalStorageService LocalStorageService
+@inject NavigationManager nManager
 
 <h3>Authorization</h3>
 <form>
@@ -16,31 +17,29 @@
         <label class="form-label" for="form3Example1cg">Your Password</label>
     </div>
 
-    <button class="btn btn-dark" @onclick="UserLogin">Login</button>
+    <button class="btn btn-dark" @onclick="() => UserLogin()">Login</button>
 </form>
 
 @code {
     private string? _userLogin;
     private string? _userPassword;
 
-    private async void UserLogin()
+    private async Task UserLogin()
     {
         if (_userLogin is not null &&
             _userPassword is not null)
         {
-            UserService.CurrentUser = UserService.UserLogin(_userLogin);
-            if (UserService.CurrentUser is null)
+            var potentialUser = UserService.UserLogin(_userLogin, _userPassword); 
+            if (potentialUser is null)
             {
                 await Js.InvokeVoidAsync("alert", "No such user in DB!");
                 return;
             }
-            
-            await Js.InvokeVoidAsync("alert", "Authorization has succesfull!");
-            await LocalStorageService.SetAsync<User>("Authorization", UserService.CurrentUser);
-            
+            UserService.CurrentUser = potentialUser;
+            nManager.NavigateTo("/Cabinet");
+
             _userLogin = null;
             _userPassword = null;
-            StateHasChanged();
         }
     }
 }

@@ -13,13 +13,13 @@ Welcome to your new app.
 
 @code
 {
-    protected override async Task OnInitializedAsync()
-    {
-        User user = await LocalStorageService.GetAsync<User>("Authorization");
-
-        if (user is not null) 
-        {
-            UserService.CurrentUser = user;
-        }
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     User user = await LocalStorageService.GetAsync<User>("Authorization");
+    //
+    //     if (user is not null) 
+    //     {
+    //         UserService.CurrentUser = user;
+    //     }
+    // }
 }
