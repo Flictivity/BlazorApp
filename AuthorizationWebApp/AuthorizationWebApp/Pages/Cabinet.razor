@@ -2,7 +2,7 @@
 @using AuthorizationWebApp.Data.LocalStorageService
 @inject UserService UserService;
 @inject ILocalStorageService LocalStorageService;
-@inject IJSRuntime Js;
+@inject NavigationManager NavigationManager
 <h3>Cabinet</h3>
 
 @if (UserService.CurrentUser is not null &&
@@ -29,6 +29,6 @@ else if(UserService.CurrentUser is null)
     {
         UserService.CurrentUser = null!;
         LocalStorageService.RemoveAsync("Authorization");
-        Js.InvokeVoidAsync("alert", "Log out has succesfull!");
+        NavigationManager.NavigateTo("/Authorization");
     }
 }
