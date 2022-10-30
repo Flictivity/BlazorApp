@@ -4,7 +4,8 @@
 
 <h3>Album</h3>
 
-<button @onclick="FileSystemService.SaveTestImage" class="btn btn-dark">Upload</button>
+<InputFile OnChange="SaveImage" multiple></InputFile>
+
 <table class="table">
     <thead>
     <tr>
@@ -46,5 +47,16 @@
     {
         _selectedImage = image;
         _imgShowed = false;
+    }
+
+    private async Task SaveImage(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
+        {
+            Stream stream = file.OpenReadStream(909090);
+            await FileSystemService.SaveImage(stream, file.Name);
+            stream.Dispose();
+            StateHasChanged();
+        }
     }
 }

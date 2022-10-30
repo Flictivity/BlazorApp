@@ -17,6 +17,10 @@ public class FileSystemService : IFileSystemService
             GridFs?.UploadFromStream(fileName, fs);
         }
     }
+    public async Task SaveImage(Stream fs, string fileName)
+    {
+        await GridFs?.UploadFromStreamAsync(fileName, fs)!;
+    }
 
     public void LoadImage(string fileName)
     {
@@ -53,14 +57,6 @@ public class FileSystemService : IFileSystemService
         }
 
         return images;
-    }
-
-    public void SaveTestImage()
-    {
-        using (var fs = new FileStream(@"C:\Users\User\Downloads\testImage.jpg", FileMode.Open))
-        {
-            GridFs?.UploadFromStream("testImage.jpg", fs);
-        }
     }
 
     private bool CheckFileExisting(string fileName)
