@@ -9,7 +9,13 @@ public class FileSystemService : IFileSystemService
     private static readonly MongoClient Client = new MongoClient("mongodb://localhost");
     private static readonly IMongoDatabase Database = Client.GetDatabase("ImagesTest");
     private static readonly GridFSBucket? GridFs = new GridFSBucket(Database);
-    
+    private readonly ILogger<GridFSBucket> _logger;
+
+    public FileSystemService(ILogger<GridFSBucket> logger)
+    {
+        _logger = logger;
+    }
+
     public void SaveImage(string fileName, string path)
     {
         using (var fs = new FileStream(path, FileMode.Open))
@@ -24,11 +30,19 @@ public class FileSystemService : IFileSystemService
 
     public void LoadImage(string fileName)
     {
-        using (var fs = new FileStream(
-                   $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"/wwwroot/images/")}{fileName}",
-                   FileMode.CreateNew))
+        try
         {
-            GridFs?.DownloadToStreamByName(fileName, fs);
+            using (var fs = new FileStream(
+                       $"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"/wwwroot/images/")}{fileName}",
+                       FileMode.CreateNew))
+            {
+                GridFs?.DownloadToStreamByName(fileName, fs);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            throw;
         }
     }
 

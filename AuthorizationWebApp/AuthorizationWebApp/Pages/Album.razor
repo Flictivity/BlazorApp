@@ -53,10 +53,11 @@
     {
         foreach (var file in e.GetMultipleFiles(e.FileCount))
         {
-            Stream stream = file.OpenReadStream(909090);
+            Stream stream = file.OpenReadStream(3000000);
             await FileSystemService.SaveImage(stream, file.Name);
+            FileSystemService.LoadImage(file.Name);
             stream.Dispose();
-            StateHasChanged();
         }
+        _images = FileSystemService.GetAllFiles();
     }
 }
